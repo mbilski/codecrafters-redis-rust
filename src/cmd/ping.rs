@@ -1,5 +1,5 @@
-use crate::connection::Connection;
-use crate::frame::Frame;
+use crate::Connection;
+use crate::Frame;
 
 #[derive(Debug, Default)]
 pub struct Ping {}

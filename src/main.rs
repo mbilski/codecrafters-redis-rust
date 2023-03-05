@@ -1,6 +1,10 @@
-use tokio::net::TcpListener;
+use std::{
+    collections::HashMap,
+    sync::{Arc, Mutex},
+};
 
 use redis_starter_rust::server;
+use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() {
@@ -8,13 +12,17 @@ async fn main() {
 
     println!("Listening on {}", listener.local_addr().unwrap());
 
+    let db = Arc::new(Mutex::new(HashMap::new()));
+
     loop {
         match listener.accept().await {
             Ok((stream, _)) => {
                 println!("New client connected");
 
+                let db = db.clone();
+
                 tokio::spawn(async move {
-                    match server::run(stream).await {
+                    match server::run(db, stream).await {
                         Ok(_) => println!("Client disconnected"),
                         Err(e) => eprintln!("error handling connection: {}", e),
                     }

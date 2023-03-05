@@ -4,7 +4,7 @@ use bytes::{Buf, BytesMut};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::{io::BufWriter, net::TcpStream};
 
-use crate::frame::{Frame, FrameError};
+use crate::{Frame, FrameError};
 
 pub struct Connection {
     stream: BufWriter<TcpStream>,
@@ -48,8 +48,11 @@ impl Connection {
                     .write_all(b.len().to_string().as_bytes())
                     .await?;
                 self.stream.write_all(b"\r\n").await?;
-                self.stream.write_all(&b).await?;
+                self.stream.write_all(b).await?;
                 self.stream.write_all(b"\r\n").await?;
+            }
+            Frame::Null => {
+                self.stream.write_all(b"$-1\r\n").await?;
             }
             Frame::Array(_) => todo!(),
         }
@@ -62,11 +65,9 @@ impl Connection {
     pub fn parse_frame(&mut self) -> Result<Frame, FrameError> {
         let mut buf = Cursor::new(&self.buffer[..]);
 
-        let len = buf.position() as usize;
-
-        buf.set_position(0);
-
         let frame = Frame::parse(&mut buf)?;
+
+        let len = buf.position() as usize;
 
         self.buffer.advance(len);
 

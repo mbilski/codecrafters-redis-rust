@@ -1,8 +1,8 @@
 use bytes::Bytes;
 
-use crate::connection::Connection;
-use crate::frame::Frame;
-use crate::parse::Parse;
+use crate::Connection;
+use crate::Frame;
+use crate::Parse;
 
 #[derive(Debug, Default)]
 pub struct Echo {

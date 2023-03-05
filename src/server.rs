@@ -1,9 +1,10 @@
 use tokio::net::TcpStream;
 
 use crate::cmd::Command;
-use crate::connection::Connection;
+use crate::Connection;
+use crate::Db;
 
-pub async fn run(stream: TcpStream) -> anyhow::Result<()> {
+pub async fn run(db: Db, stream: TcpStream) -> anyhow::Result<()> {
     let mut connection = Connection::new(stream);
 
     loop {
@@ -13,6 +14,6 @@ pub async fn run(stream: TcpStream) -> anyhow::Result<()> {
 
         dbg!(&cmd);
 
-        cmd.apply(&mut connection).await?;
+        cmd.apply(&db, &mut connection).await?;
     }
 }
