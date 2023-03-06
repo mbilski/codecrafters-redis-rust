@@ -1,9 +1,4 @@
-use std::{
-    collections::HashMap,
-    sync::{Arc, Mutex},
-};
-
-use redis_starter_rust::server;
+use redis_starter_rust::{server, Db};
 use tokio::net::TcpListener;
 
 #[tokio::main]
@@ -12,7 +7,7 @@ async fn main() {
 
     println!("Listening on {}", listener.local_addr().unwrap());
 
-    let db = Arc::new(Mutex::new(HashMap::new()));
+    let db = Db::new();
 
     loop {
         match listener.accept().await {

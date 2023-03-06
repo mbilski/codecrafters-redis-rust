@@ -1,5 +1,3 @@
-use bytes::Bytes;
-
 use crate::Connection;
 use crate::Db;
 use crate::Frame;
@@ -17,10 +15,10 @@ impl Get {
     }
 
     pub async fn apply(self, db: &Db, dst: &mut Connection) -> anyhow::Result<()> {
-        let value = db.lock().unwrap().get(&self.key).cloned();
+        let value = db.get(&self.key);
 
         let response = match value {
-            Some(value) => Frame::Bulk(Bytes::from(value)),
+            Some(value) => Frame::Bulk(value),
             None => Frame::Null,
         };
 

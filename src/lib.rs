@@ -1,5 +1,8 @@
 pub mod server;
 
+pub mod db;
+pub use db::Db;
+
 pub mod cmd;
 pub use cmd::Command;
 
@@ -10,6 +13,4 @@ mod frame;
 pub use frame::{Frame, FrameError};
 
 mod parse;
-use parse::Parse;
-
-pub type Db = std::sync::Arc<std::sync::Mutex<std::collections::HashMap<String, String>>>;
+use parse::{Parse, ParseError};
