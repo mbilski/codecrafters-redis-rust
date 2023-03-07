@@ -12,7 +12,7 @@ async fn main() {
     loop {
         match listener.accept().await {
             Ok((stream, _)) => {
-                println!("New client connected");
+                println!("New client connected!");
 
                 let db = db.clone();
 
