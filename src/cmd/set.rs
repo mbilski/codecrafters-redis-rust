@@ -23,8 +23,8 @@ impl Set {
 
         match parse.next_string() {
             Ok(s) if s.to_lowercase() == "px" => {
-                let seconds = parse.next_int()?;
-                expire = Some(Duration::from_secs(seconds));
+                let miliseconds = parse.next_int()?;
+                expire = Some(Duration::from_millis(seconds));
             }
             Ok(_) => return Err(anyhow::anyhow!("invalid syntax")),
             Err(ParseError::End) => {}
