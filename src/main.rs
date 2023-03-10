@@ -18,7 +18,7 @@ async fn main() {
 
                 tokio::spawn(async move {
                     match server::run(db, stream).await {
-                        Ok(_) => println!("Client disconnected"),
+                        Ok(_) => println!("Client disconnected!!!"),
                         Err(e) => eprintln!("error handling connection: {}", e),
                     }
                 });
