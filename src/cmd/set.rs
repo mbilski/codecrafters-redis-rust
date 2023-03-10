@@ -24,7 +24,7 @@ impl Set {
         match parse.next_string() {
             Ok(s) if s.to_lowercase() == "px" => {
                 let miliseconds = parse.next_int()?;
-                expire = Some(Duration::from_millis(seconds));
+                expire = Some(Duration::from_millis(miliseconds));
             }
             Ok(_) => return Err(anyhow::anyhow!("invalid syntax")),
             Err(ParseError::End) => {}
